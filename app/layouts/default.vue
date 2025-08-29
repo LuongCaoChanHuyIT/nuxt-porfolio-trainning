@@ -1,19 +1,28 @@
 <template>
-  <div>
-    <header class="p-4 bg-gray-200">
-      <nav>
-        <NuxtLink to="/">Home</NuxtLink> |
-        <NuxtLink to="/about">About</NuxtLink> |
-        <NuxtLink to="/admin/dashboard">Admin</NuxtLink>
-      </nav>
-    </header>
-
-    <main class="p-6">
+  <div class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+      <Navigation />
       <slot />
     </main>
-
-    <footer class="p-4 bg-gray-200">
-      <p>© 2025 My Nuxt App</p>
-    </footer>
+    <Footer />
   </div>
 </template>
+
+<script setup>
+import Navigation from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue";
+import { onMounted, nextTick } from "vue";
+import { useThemeStore } from "./stores/theme";
+
+const themeStore = useThemeStore();
+
+onMounted(async () => {
+  await nextTick();
+  document.documentElement.setAttribute(
+    "data-bs-theme",
+    themeStore.isDark ? "dark" : "light"
+  );
+});
+</script>
+
+<style scoped></style>
